@@ -21,7 +21,7 @@ pipeline {
         }
         stage('S-2: Checkout code') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/mamun7025/spring-boot-docker-cicd.git']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/mamun7025/spring-boot-tomcat-cicd.git']]])
             }
         }
         stage('S-3: Gradle build') {
@@ -38,20 +38,13 @@ pipeline {
 
         stage('S-4: Building docker image') {
             steps{
-                script {
-                    dockerImage = docker.build imageName
-                }
+                echo 'Start deploy...'
             }
         }
 
         stage('S-5: Push image to dockerhub') {
         	steps{
-        		script {
-        			docker.withRegistry( '', registryCredential ) {
-        				dockerImage.push("$BUILD_NUMBER")
-        				dockerImage.push('latest')
-        			}
-        		}
+        		echo 'Start deploy...'
         	}
         }
 
@@ -60,34 +53,8 @@ pipeline {
              steps {
                echo 'Start deploy...'
             }
-
         }
 
-        // Stopping Docker containers for cleaner Docker run
-        stage('S-7: Docker stop container') {
-            steps {
-                // for windows
-                bat 'docker images'
-                bat 'docker ps'
-                bat "docker container stop ${env.containerName}"
-                bat "docker container rm ${env.containerName}"
-
-                // for linux
-                //sh 'docker ps -f name=mypythonappContainer -q | xargs --no-run-if-empty docker container stop'
-                //sh 'docker container ls -a -fname=mypythonappContainer -q | xargs -r docker container rm'
-            }
-        }
-
-
-        stage('S-8: Run Docker container on local machine') {
-            steps {
-                echo 'Run Docker container on local machine...'
-                // windows
-                bat "docker run --name ${env.containerName} -d -p 8585:9696 ${env.imageName}"
-                // linux
-                // sh "docker run -d -p 4030:80 nikhilnidhi/nginxtest"
-            }
-        }
 
         stage('S-9: Run Docker container on remote hosts') {
             steps {
