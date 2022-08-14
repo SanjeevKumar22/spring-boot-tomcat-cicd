@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SpringBootCiCdDockerApplication {
+public class SpringBootCiCdTomcatApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringBootCiCdDockerApplication.class, args);
+		SpringApplication.run(SpringBootCiCdTomcatApplication.class, args);
 	}
 
 }

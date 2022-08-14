@@ -2,10 +2,6 @@ pipeline {
     agent any
 
     environment {
-        imageName = 'mn7025/spring-boot-docker-cicd-v2'
-        containerName = 'spring-boot-docker-cicd-v2'
-        registryCredential = 'DockerCredential'
-        dockerImage = ''
     }
 
     triggers {
@@ -36,33 +32,18 @@ pipeline {
 
         }
 
-        stage('S-4: Building docker image') {
-            steps{
-                echo 'Start deploy...'
-            }
-        }
-
-        stage('S-5: Push image to dockerhub') {
-        	steps{
-        		echo 'Start deploy...'
-        	}
-        }
-
-
-        stage('S-6: Deploy') {
+        stage('S-4: Deploy to Tomcat') {
              steps {
                echo 'Start deploy...'
+               deploy adapters: [tomcat8(credentialsId: 'TomcatCreds', path: '', url: 'http://localhost:8080/')], contextPath: 'tm-cicd-app', war: '**/*.war'
             }
         }
 
-
-        stage('S-9: Run Docker container on remote hosts') {
-            steps {
-                echo 'Run Docker container on remote hosts'
-                // sh "docker -H ssh://jenkins@172.31.28.25 run -d -p 4001:80 nikhilnidhi/nginxtest"
-            }
+        stage('S-5: Finished Job') {
+           steps {
+               echo 'Finished Job'
+           }
         }
-
 
     }
     post {
@@ -70,4 +51,5 @@ pipeline {
             echo 'Finished CI/CD Job'
         }
     }
+
 }
