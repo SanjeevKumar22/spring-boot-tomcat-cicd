@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     environment {
+        registryCredential = 'DockerCredential'
     }
 
     triggers {
