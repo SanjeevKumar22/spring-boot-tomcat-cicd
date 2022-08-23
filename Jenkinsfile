@@ -18,7 +18,8 @@ pipeline {
         }
         stage('S-2: Checkout code') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/mamun7025/spring-boot-tomcat-cicd.git']]])
+                //checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/mamun7025/spring-boot-tomcat-cicd.git']]])
+                 echo 'Starting job, checkout'
             }
         }
         stage('S-3: Gradle build') {
@@ -36,7 +37,7 @@ pipeline {
         stage('S-4: Deploy to Tomcat') {
              steps {
                echo 'Start deploy...'
-               deploy adapters: [tomcat9(credentialsId: 'TomcatCreds', path: '', url: 'http://localhost:8080/')], contextPath: 'tm-app', war: '**/*.war'
+               deploy adapters: [tomcat9(credentialsId: 'TomcatCreds', path: '', url: 'http://localhost:8082/')], contextPath: 'tm-app', war: '**/*.war'
             }
         }
 
