@@ -37,7 +37,7 @@ pipeline {
         stage('S-4: Deploy to Tomcat') {
              steps {
                echo 'Start deploy...'
-               deploy adapters: [tomcat9(credentialsId: 'TomcatCreds', path: '', url: 'http://localhost:8082/')], contextPath: 'tm-app', war: '**/*.war'
+               deploy adapters: [tomcat9(credentialsId: 'TomcatCreds', path: '', url: 'http://localhost:8082/')], contextPath: null, war: '**/*.war'
             }
         }
 
